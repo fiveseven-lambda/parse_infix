@@ -16,12 +16,12 @@ public:
 	virtual ~Expr() = default;
 };
 
-class Id: public Expr {
+class Id : public Expr {
 	char name;
 public:
 	Id(char name): name(name) {}
-	virtual void print(int) override;
 	~Id() = default;
+	virtual void print(int) override;
 };
 
 class Binary : public Expr {
@@ -32,8 +32,8 @@ public:
 		left(std::move(left)),
 		right(std::move(right)),
 		op(op) {}
-	virtual void print(int) override;
 	~Binary() = default;
+	virtual void print(int) override;
 };
 
 std::unique_ptr<Expr> parse(int precedence = 0) {
@@ -42,17 +42,11 @@ std::unique_ptr<Expr> parse(int precedence = 0) {
 	for(;;){
 		std::optional<Op> op;
 		switch(std::cin.peek()){
-			case '|':
-				if(precedence == 0) op = Op::Or;
+			case '*':
+				if(precedence == 4) op = Op::Mul;
 				break;
-			case '&':
-				if(precedence == 1) op = Op::And;
-				break;
-			case '<':
-				if(precedence == 2) op = Op::Less;
-				break;
-			case '>':
-				if(precedence == 2) op = Op::Greater;
+			case '/':
+				if(precedence == 4) op = Op::Div;
 				break;
 			case '+':
 				if(precedence == 3) op = Op::Add;
@@ -60,11 +54,17 @@ std::unique_ptr<Expr> parse(int precedence = 0) {
 			case '-':
 				if(precedence == 3) op = Op::Sub;
 				break;
-			case '*':
-				if(precedence == 4) op = Op::Mul;
+			case '<':
+				if(precedence == 2) op = Op::Less;
 				break;
-			case '/':
-				if(precedence == 4) op = Op::Div;
+			case '>':
+				if(precedence == 2) op = Op::Greater;
+				break;
+			case '&':
+				if(precedence == 1) op = Op::And;
+				break;
+			case '|':
+				if(precedence == 0) op = Op::Or;
 				break;
 		}
 		if(!op) return ret;
