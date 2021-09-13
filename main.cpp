@@ -81,6 +81,8 @@ int main(){
 	parse()->print();
 }
 
+constexpr int TAB = 4;
+
 void Id::print(int indent) {
 	for(int i = 0; i < indent; ++i) std::cout << ' ';
 	std::cout << name << std::endl;
@@ -115,6 +117,6 @@ void Binary::print(int indent) {
 			name = "or";
 	}
 	std::cout << name << std::endl;
-	left->print(indent + 1);
-	right->print(indent + 1);
+	left->print(indent + TAB);
+	right->print(indent + TAB);
 }
